@@ -3,7 +3,7 @@ Make your models searchable by indexing them. Uses DoubleMetaPhone to find simil
 Example model
 -------
 
-  <?php
+		<?php
 
 	use Searchable\Models\Searchable;
 
