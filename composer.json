@@ -1,0 +1,17 @@
+{
+  "name": "rapideinternet/laravel-searchable",
+  "description": "Root file for the Laravel Searchable",
+  "license": "proprietary",
+  "version": "0.1",
+  "require": {
+    "illuminate/support": "5.0.*",
+    "illuminate/routing": "5.0.*",
+    "illuminate/view": "5.0.*",
+	"illuminate/html": "5.0.*@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Searchable\\": "src/"
+    }
+  }
+}
