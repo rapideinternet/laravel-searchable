@@ -37,8 +37,7 @@ class SearchableInstaller extends Command {
 	 */
 	public function fire()
 	{
-		$this->call('vendor:publish');
-        $this->call('migrate:install');
+		// $this->call('vendor:publish');
         $this->call('migrate:reset', ['--force' => true]);
         $this->call('migrate', ['--force' => true]);
         $this->call('db:seed', ['--force' => true]);
