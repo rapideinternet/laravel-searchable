@@ -3,40 +3,42 @@ Make your models searchable by indexing them. Uses DoubleMetaPhone to find simil
 Example model
 -------
 
-		<?php
+``` php
+<?php
 
-	use Searchable\Models\Searchable;
+use Searchable\Models\Searchable;
 
-	class Item extends Searchable {
-		
-		/**
-		 * The database table used by the model.
-		 *
-		 * @var string
-		 */
-		protected $table = 'items';
-		
-		/**
-		 * The attributes that are mass assignable.
-		 *
-		 * @var array
-		 */
-		protected $fillable = [ 
-			'name', 
-			'title',
-			'content',
-			];
-		/**
-		 * The attributes that are automatically indexed and searchable.
-		 *
-		 * @var array
-		 */
-		protected $searchable = [
-			'title',
-			'content',
-			];	
+class Item extends Searchable {
+	
+	/**
+	 * The database table used by the model.
+	 *
+	 * @var string
+	 */
+	protected $table = 'items';
+	
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+	protected $fillable = [ 
+		'name', 
+		'title',
+		'content',
+		];
+	/**
+	 * The attributes that are automatically indexed and searchable.
+	 *
+	 * @var array
+	 */
+	protected $searchable = [
+		'title',
+		'content',
+		];	
 
-	}
+}
+```
 
 Implementing the search code
 -------		
