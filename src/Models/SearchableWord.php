@@ -48,13 +48,6 @@ class SearchableWord extends Model
 			}
 		}
 		return isset($resultset) ? $resultset : NULL;
-		// $sqlValues = [];
-		// foreach($values as $value) {
-			// $sqlValues[] = "('".$value['word']."','".$value['primary']."','".$value['secondary']."')";
-		// }
-		// $sql = 'INSERT INTO `searchable_word_index` (`word`, `primary`, `secondary`) values '.
-			// implode(',', $sqlValues).
-			// 'ON DUPLICATE KEY UPDATE `word`=`word`';
 	}
 	
 }
