@@ -3,7 +3,7 @@ namespace Searchable\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-abstract class Searchable extends Model 
+abstract class SearchableModel extends Model 
 {
 	
 	protected $searchable = [];
