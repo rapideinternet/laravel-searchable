@@ -40,8 +40,9 @@ class Item extends SearchableModel {
 }
 ```
 
-Setting up composer.json
+Setting up
 -------
+Update composer.json with the following entries
 ```
 "require": {
 	"rapideinternet/laravel-searchable": "dev-master"
@@ -54,7 +55,25 @@ Setting up composer.json
 	}
 ],
 ```
-
-Implementing the search code
--------		
-Coming soon.
+Run the following shell commands
+```
+composer update
+php artisan migrate
+```
+Update your models by changing the following lines
+```
+	class Website extends Model {
+```
+To extend the SearchableModel class instead of the Model class
+```
+	class Website extends SearchableModel {
+```
+Add an array of searchable keys to the model definition
+```
+protected $searchable = [
+	'name',
+	'comments',
+	...
+];
+```
+Every time a model is saved or stored, it will automatically index the words present in the searchable array
