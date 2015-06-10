@@ -42,7 +42,7 @@ class Item extends SearchableModel {
 
 Setting up
 -------
-Update composer.json with the following entries
+Update *composer.json* with the following entries
 ```
 "require": {
 	"rapideinternet/laravel-searchable": "dev-master"
@@ -55,7 +55,7 @@ Update composer.json with the following entries
 	}
 ],
 ```
-Update your config\app.php
+Update your *config\app.php*
 ```
 'providers' => [
 	...
