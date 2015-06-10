@@ -63,11 +63,11 @@ php artisan migrate
 ```
 Update your models by changing the following lines
 ```
-	class Website extends Model {
+class Website extends Model {
 ```
 To extend the SearchableModel class instead of the Model class
 ```
-	class Website extends SearchableModel {
+class Website extends SearchableModel {
 ```
 Add an array of searchable keys to the model definition
 ```
