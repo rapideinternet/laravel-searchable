@@ -33,8 +33,8 @@ class Item extends SearchableModel {
 	 * @var array
 	 */
 	protected $searchable = [
-		'title',
-		'content',
+		'title' => 20,
+		'content' => 5,
 		];	
 
 }
@@ -81,12 +81,19 @@ To extend the SearchableModel class instead of the Model class
 ```
 class Website extends SearchableModel {
 ```
-Add an array of searchable keys to the model definition
+Add an array of searchable attributes. Each attribute carries a weight. More weight means higher relevance.
 ```
 protected $searchable = [
-	'name',
-	'comments',
+	'name' => 20,
+	'comments' => 5,
 	...
 ];
 ```
+For example if searching for the word **"John"**, one item may contain 1 occurence of the query in the **'name'** attribute while another item contains 3 occurences of the query in the **'comments'** attribute.
+The result would be that the first item had a score of 20 while the second item has a score of 15 and is ranked lower because the 'name' attirubte is more relevant.
+
+Indexing
+-------
 Every time a model is saved or stored, it will automatically index the words present in the searchable array
+
+Scheduler
