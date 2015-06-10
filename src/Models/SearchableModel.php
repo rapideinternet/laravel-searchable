@@ -1,12 +1,14 @@
 <?php
 namespace Searchable\Models;
 
+use Searchable\Interfaces\SearchableResult;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class SearchableModel extends Model 
+abstract class SearchableModel extends Model implements SearchableResult
 {
 	
 	protected $searchable = [];
+	private $searchable_score = 0;
 	
 	/**
      * Bootstrap any application services.
@@ -45,28 +47,76 @@ abstract class SearchableModel extends Model
 	
 	public function updateIndexes()
 	{
-		$words = [];
-		foreach($this->searchable as $attr) {
-			preg_match_all('/\b(?:\w+)\b/mui', $this->{$attr}, $matches);
-			$words = array_merge($words, $matches[0]);
-		}
-		$words = SearchableWord::createFromWords($words);
+		$this->destroyIndexes();
 		$indexes = [];
-		foreach($words as $word) {
-			$indexes[] = $this->attachWord($word);
+		foreach($this->searchable as $attr => $score) {
+			if(preg_match_all('/\b(?:\w+)\b/mui', $this->{$attr}, $matches)) {
+				foreach($matches[0] as $match) {
+					$word = SearchableWord::createFromWord($match);
+					$indexes[] = SearchableWordIndex::create([
+						'instance_class' => get_class($this),
+						'instance_key' => $this->getKey(),
+						'searchable_word_id' => $word->id,
+						'score' => $score,
+					]);
+				}
+			}
 		}
 		return $indexes;
 	}
 	
-	public function attachWord($searchableWord)
+	public function destroyIndexes()
 	{
-		if($this->wordIndexes()->where('searchable_word_id', $searchableWord->id)->count() > 0) {
-			return false;
-		}
-		return SearchableWordIndex::create([
-			'instance_class' => get_class($this),
-			'instance_key' => $this->getKey(),
-			'searchable_word_id' => $searchableWord->id,
-		]);
+		return SearchableWordIndex::where('instance_class', get_class($this))->where('instance_key', $this->getKey())->delete();
 	}
+	
+	public function addScore($score) 
+	{
+		return($this->searchable_score += $score);
+	}
+	
+	public function getScore()
+	{
+		return $this->searchable_score;
+	}
+	
+	public function subScore($score) 
+	{
+		$this->searchable_score = max(0, $this->searchable_score - $score);
+	}
+	
+	public function getTitle()
+	{
+		return NULL;
+	}
+	
+	public function getImage()
+	{
+		return NULL;
+	}
+	
+	public function hasImage() 
+	{
+		return false;
+	}
+	
+	public function getDescription()
+	{
+		return NULL;
+	}
+	
+	public function hasDescription()
+	{
+		return false;
+	}
+	
+	public function getLink()
+	{
+		return NULL;
+	}
+	
+	public function hasLink()
+	{
+		return false;
+	}	
 }

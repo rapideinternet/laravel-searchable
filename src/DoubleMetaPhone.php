@@ -34,7 +34,7 @@ class DoubleMetaPhone
 
 		// main loop
 
-		while (strlen($primary) < 4 || strlen($secondary) < 4){
+		while (strlen($primary) < 16 || strlen($secondary) < 16){
 			if ($current >= $length){
 				break;
 			}
@@ -959,8 +959,8 @@ class DoubleMetaPhone
 		// printf("<br />PRIMARY:    %s\n", $primary);
 		// printf("<br />SECONDARY:  %s\n", $secondary);
 
-		$primary = substr($primary, 0, 4);
-		$secondary = substr($secondary, 0, 4);
+		$primary = substr($primary, 0, 16);
+		$secondary = substr($secondary, 0, 16);
 
 		if( $primary == $secondary ){
 			$secondary = NULL;

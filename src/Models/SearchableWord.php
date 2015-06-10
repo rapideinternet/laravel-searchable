@@ -3,7 +3,7 @@ namespace Searchable\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SearchableWordIndex extends Model 
+class SearchableWord extends Model 
 {
 	/**
 	 * The database table used by the model.
@@ -22,29 +22,32 @@ class SearchableWordIndex extends Model
 		'primary',
 		'secondary',
 		];
+		
+	public $timestamps = false;
 
 	public static function createFromWord($word)
 	{
-		list($primary, $secondary) = \DoubleMetaPhone::get($word);
-		return [self::create([
-			'word' => iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $word),
-			'primary' => $primary,
-			'secondary' => $secondary
-		])];
+		if(($result = self::where('word', $word)->first()) != NULL) {
+			return $result;
+		}
+		
+		$metaphone = \DoubleMetaPhone::get($word);
+		
+		return self::create([
+			'word' => strtolower(iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $word)),
+			'primary' => $metaphone['primary'],
+			'secondary' => $metaphone['secondary']
+		]);
 	}
 
 	public static function createFromWords($words)
 	{
-		$words = [];
 		foreach($words as $word) {
-			$metaPhone = \DoubleMetaPhone::get($word);
-			$words[] = self::create([
-				'word' => iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $word),
-				'primary' => $metaPhone['primary'],
-				'secondary' => $metaPhone['secondary']
-			]);
+			if(($result = self::createFromWord($word)) != NULL) {
+				$resultset[] = $result;
+			}
 		}
-		return $words;
+		return isset($resultset) ? $resultset : NULL;
 		// $sqlValues = [];
 		// foreach($values as $value) {
 			// $sqlValues[] = "('".$value['word']."','".$value['primary']."','".$value['secondary']."')";

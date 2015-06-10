@@ -15,9 +15,10 @@ class CreateSearchableWordIndexTable extends Migration {
 		Schema::create('searchable_word_index', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('searchable_word_id', 16);
+			$table->integer('searchable_word_id')->unsigned();
 			$table->string('instance_class', 255);
-			$table->string('instance_key', 100);
+			$table->integer('instance_key')->unsigned();
+			$table->integer('score')->unsigned();
 		});
 	}
 
