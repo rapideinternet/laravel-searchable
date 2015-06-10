@@ -12,12 +12,12 @@ class CreateSearchableWordIndexTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('searchable_word_index', function(Blueprint $table)
+		Schema::create('searchable_words', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('searchable_word_id', 16);
-			$table->string('instance_class', 255);
-			$table->string('instance_key', 100);
+			$table->string('word', 128)->unique();
+			$table->string('primary', 16);
+			$table->string('secondary', 16)->nullable();
 		});
 	}
 
@@ -28,7 +28,7 @@ class CreateSearchableWordIndexTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('searchable_word_index');
+		Schema::drop('searchable_words');
 	}
 
 }

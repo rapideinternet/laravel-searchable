@@ -10,7 +10,7 @@ class SearchableWordIndex extends Model
 	 *
 	 * @var string
 	 */
-	protected $table = 'searchable_word_index';
+	protected $table = 'searchable_words';
 
 	/**
 	 * The attributes that are mass assignable.
