@@ -1,5 +1,5 @@
 # Laravel Searchable
-Makes models extending the SearchableModel class searchable by indexing them using two database tables and an extensive autmatically generated word list. It uses and improved version of the Metaphone phonetic algorithm, published by Lawrence Philips in 1990. The DoubleMetaphone method tries to account for spelling errors by generating two versions of the phonetic representation of the word.
+Makes models extending the SearchableModel class searchable by indexing them using two database tables and an extensive automatically generated word list. It uses an improved version of the Metaphone phonetic algorithm, published by Lawrence Philips in 1990. The DoubleMetaphone method tries to account for spelling errors by generating two versions of the phonetic representation of the word.
 Example model
 -------
 
