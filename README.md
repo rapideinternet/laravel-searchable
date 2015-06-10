@@ -55,6 +55,18 @@ Update composer.json with the following entries
 	}
 ],
 ```
+Update your config\app.php
+```
+'providers' => [
+	...
+	'Searchable\SearchableServiceProvider',
+],
+
+'aliasses' => [
+	...
+	'Search'		=> 'Searchable\Facades\Search',
+],
+```
 Run the following shell commands
 ```
 composer update
