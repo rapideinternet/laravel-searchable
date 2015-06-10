@@ -39,9 +39,8 @@ class Item extends Searchable {
 
 }
 ```
-`
 
-Setting up composer
+Setting up composer.json
 -------
 ```
 "require": {
