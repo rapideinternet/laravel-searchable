@@ -58,6 +58,7 @@ Update composer.json with the following entries
 Run the following shell commands
 ```
 composer update
+php artisan vendor:publish
 php artisan migrate
 ```
 Update your models by changing the following lines
