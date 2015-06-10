@@ -4,7 +4,7 @@ use Searchable\Interfaces\SearchableResult;
 use Illuminate\Database\Eloquent\Model;
  
 abstract class SearchableModel extends Model implements SearchableResult
- {
+{
  	
  	protected $searchable = [];
 	private $searchable_score = 0;

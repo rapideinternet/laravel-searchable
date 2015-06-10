@@ -56,7 +56,7 @@ Update **composer.json** with the following entries
 ],
 ```
 Update your **config\app.php**
-```
+``` php
 'providers' => [
 	...
 	'Searchable\SearchableServiceProvider',
@@ -74,15 +74,15 @@ php artisan vendor:publish
 php artisan migrate
 ```
 Update your models by changing the following lines
-```
+``` php
 class Website extends Model {
 ```
 To extend the SearchableModel class instead of the Model class
-```
+``` php
 class Website extends SearchableModel {
 ```
 Add an array of searchable attributes. Each attribute carries a weight. More weight means higher relevance.
-```
+``` php
 protected $searchable = [
 	'name' => 20,
 	'comments' => 5,
@@ -95,6 +95,26 @@ The result would be that the first item has a score of 20 while the second item 
 
 Indexing
 -------
-Every time a model is saved or stored, it will automatically index the words present in the searchable array
+Every time a model is saved or stored, it will automatically index the words present in the searchable array. This method is opportunistic and requires you to add new models through the ORM.
 
-Scheduler
+###Artisan
+If you already have data present in your database that you need to index. You can simply run the following command:
+
+``` php
+php artisan searchable:index
+```
+
+###Scheduler
+If you want to schedule this index you can add it to the Kernel like this.
+``` php
+protected $commands = [
+	...
+	'Searchable\Console\Commands\IndexCommand',
+];
+
+protected function schedule(Schedule $schedule)
+{
+	...
+	$schedule->command('searchable:index')->dailyAt('4:00');
+}
+```

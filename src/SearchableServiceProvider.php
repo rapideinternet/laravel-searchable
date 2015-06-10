@@ -22,7 +22,7 @@ class SearchableServiceProvider extends ServiceProvider
 				return new DoubleMetaPhone();
 		});
 
-		$this->registerInstallCommand($this->app);
+		$this->installCommands($this->app);
 		
 		
 		/*
@@ -63,7 +63,7 @@ class SearchableServiceProvider extends ServiceProvider
 	/**
 	 * @param Application $app
 	 */
-	protected function registerInstallCommand(Application $app) {
+	protected function installCommands(Application $app) {
 		$app->singleton('command.searchableinstaller', function ($app) {
 			$events = $app['events'];
 
@@ -71,6 +71,14 @@ class SearchableServiceProvider extends ServiceProvider
 		});
 
 		$this->commands('command.searchableinstaller');
+		
+		$app->singleton('command.indexcommand', function ($app) {
+			$events = $app['events'];
+
+			return new \Searchable\Console\Commands\IndexCommand($events);
+		});
+
+		$this->commands('command.indexcommand');
 	}
 
 	/**
