@@ -6,7 +6,7 @@ Example model
 ``` php
 <?php
 
-use Searchable\Models\Searchable;
+use Searchable\Models\SearchableModel;
 
 class Item extends SearchableModel {
 	
