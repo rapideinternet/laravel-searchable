@@ -9,18 +9,25 @@ use Searchable\Models\SearchableWordIndex;
 class Searchable
 {
 	
-	private $results;
+	private $offset = 0;
+	private $limit = 10;
+	private $query = '';
+
+	private $results = [];
 
 	public function __construct()
 	{
 	}
+
+	public function query($query) {
+		return $this->setQuery($query)->search()->get();
+	}
 	
-	public function find($query)
-	{
+	protected function search() {
 		$this->results = [];
 
 		// Split query into words
-		preg_match_all('/\b(?:\w+)\b/mui', $query, $matches);		
+		preg_match_all('/\b(?:\w+)\b/mui', $this->query, $matches);		
 		foreach($matches[0] as $word) {
 			
 			if(($exactMatch = SearchableWord::where('word', $word)->first()) != NULL) {
@@ -41,8 +48,32 @@ class Searchable
 		uasort($this->results, function($a, $b) {
 			$a->getScore() > $b->getScore();
 		});
+		
+		return $this;
+	}
 
+	public function setQuery($query) {
+		$this->query = trim($query);
+		return $this;
+	}
+
+	public function setLimit($limit) {
+		$this->limit = $limit;
+		return $this;
+	}
+
+	public function setOffset($offset) {
+		$this->offset = $offset;
+		return $this;
+	}
+	
+	public function get() {
 		return $this->results;
+	}
+
+	public function find($query, $offset = 0, $limit = 10)
+	{
+		return $this->setOffset($offset)->setLimit($limit)->query($query);
 	}
 	
 	private function parseResults($indexes, $multiplier = 1)
