@@ -81,16 +81,15 @@
 
 <p>Update your <strong>config\app.php</strong></p>
 
-<pre><code>'providers' =&gt; [
-    ...
-    'Searchable\SearchableServiceProvider',
-],
-
-'aliasses' =&gt; [
-    ...
-    'Search'        =&gt; 'Searchable\Facades\Search',
-],
-</code></pre>
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>providers<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">    <span class="pl-k">...</span></span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>Searchable\SearchableServiceProvider<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">],</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>aliasses<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">    <span class="pl-k">...</span></span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>Search<span class="pl-pds">'</span></span>        <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Searchable\Facades\Search<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">],</span></pre></div>
 
 <p>Run the following shell commands</p>
 
@@ -101,22 +100,19 @@ php artisan migrate
 
 <p>Update your models by changing the following lines</p>
 
-<pre><code>class Website extends Model {
-</code></pre>
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">class</span> <span class="pl-en">Website</span> <span class="pl-k">extends</span> <span class="pl-e">Model</span> {</span></pre></div>
 
 <p>To extend the SearchableModel class instead of the Model class</p>
 
-<pre><code>class Website extends SearchableModel {
-</code></pre>
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">class</span> <span class="pl-en">Website</span> <span class="pl-k">extends</span> <span class="pl-e">SearchableModel</span> {</span></pre></div>
 
 <p>Add an array of searchable attributes. Each attribute carries a weight. More weight means higher relevance.</p>
 
-<pre><code>protected $searchable = [
-    'name' =&gt; 20,
-    'comments' =&gt; 5,
-    ...
-];
-</code></pre>
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">protected</span> <span class="pl-smi">$searchable</span> <span class="pl-k">=</span> [</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>name<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">20</span>,</span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>comments<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">5</span>,</span>
+<span class="pl-s1">    <span class="pl-k">...</span></span>
+<span class="pl-s1">];</span></pre></div>
 
 <p>For example if searching for the word <strong>"John"</strong>, one item may contain 1 occurence of the query in the <strong>'name'</strong> attribute while another item contains 3 occurences of the query in the <strong>'comments'</strong> attribute.</p>
 
@@ -125,9 +121,31 @@ php artisan migrate
 <h2>
 <a id="indexing" class="anchor" href="#indexing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Indexing</h2>
 
-<p>Every time a model is saved or stored, it will automatically index the words present in the searchable array</p>
+<p>Every time a model is saved or stored, it will automatically index the words present in the searchable array. This method is opportunistic and requires you to add new models through the ORM.</p>
 
-<p>Scheduler</p>
+<h3>
+<a id="artisan" class="anchor" href="#artisan" aria-hidden="true"><span class="octicon octicon-link"></span></a>Artisan</h3>
+
+<p>If you already have data present in your database that you need to index. You can simply run the following command:</p>
+
+<pre><code>php artisan searchable:index
+</code></pre>
+
+<h3>
+<a id="scheduler" class="anchor" href="#scheduler" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scheduler</h3>
+
+<p>If you want to schedule this index you can add it to the Kernel like this.</p>
+
+<div class="highlight highlight-php"><pre><span class="pl-s1"><span class="pl-k">protected</span> <span class="pl-smi">$commands</span> <span class="pl-k">=</span> [</span>
+<span class="pl-s1">    <span class="pl-k">...</span></span>
+<span class="pl-s1">    <span class="pl-s"><span class="pl-pds">'</span>Searchable\Console\Commands\IndexCommand<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">];</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">protected</span> <span class="pl-k">function</span> <span class="pl-en">schedule</span>(<span class="pl-c1">Schedule</span> <span class="pl-smi">$schedule</span>)</span>
+<span class="pl-s1">{</span>
+<span class="pl-s1">    <span class="pl-k">...</span></span>
+<span class="pl-s1">    <span class="pl-smi">$schedule</span><span class="pl-k">-&gt;</span>command(<span class="pl-s"><span class="pl-pds">'</span>searchable:index<span class="pl-pds">'</span></span>)<span class="pl-k">-&gt;</span>dailyAt(<span class="pl-s"><span class="pl-pds">'</span>4:00<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1">}</span></pre></div>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/rapideinternet/laravel-searchable">Laravel Searchable</a> is maintained by <a href="https://github.com/rapideinternet">rapideinternet</a>.</span>
