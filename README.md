@@ -65,6 +65,7 @@ Update your **config\app.php**
 'aliasses' => [
 	...
 	'Search'		=> 'Searchable\Facades\Search',
+	'DoubleMetaPhone'	=> 'Searchable\Facades\DoubleMetaPhone',
 ],
 ```
 Run the following shell commands
