@@ -39,6 +39,22 @@ class Item extends Searchable {
 
 }
 ```
+`
+
+Setting up composer
+-------
+```
+"require": {
+	"rapideinternet/laravel-searchable": "dev-master"
+},
+
+"repositories": [
+	{
+		"type": "vcs",
+		"url":  "git@github.com:rapideinternet/laravel-searchable.git"
+	}
+],
+```
 
 Implementing the search code
 -------		
