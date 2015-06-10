@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Laravel Searchable by rapideinternet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Laravel Searchable</h1>
+      <h2 class="project-tagline">Laravel search provider</h2>
+      <a href="https://github.com/rapideinternet/laravel-searchable" class="btn">View on GitHub</a>
+      <a href="https://github.com/rapideinternet/laravel-searchable/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/rapideinternet/laravel-searchable/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="laravel-searchable" class="anchor" href="#laravel-searchable" aria-hidden="true"><span class="octicon octicon-link"></span></a>Laravel Searchable</h1>
+
+<p>Makes models extending the SearchableModel class searchable by indexing them using two database tables and an extensive autmatically generated word list. It uses and improved version of the Metaphone phonetic algorithm, published by Lawrence Philips in 1990. The DoubleMetaphone method tries to account for spelling errors by generating two versions of the phonetic representation of the word.</p>
+
+<h2>
+<a id="example-model" class="anchor" href="#example-model" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example model</h2>
+
+<div class="highlight highlight-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">Searchable\Models\SearchableModel</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">class</span> <span class="pl-en">Item</span> <span class="pl-k">extends</span> <span class="pl-e">SearchableModel</span> {</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">/**</span></span>
+<span class="pl-s1"><span class="pl-c">     * The database table used by the model.</span></span>
+<span class="pl-s1"><span class="pl-c">     *</span></span>
+<span class="pl-s1"><span class="pl-c">     * <span class="pl-k">@var</span> string</span></span>
+<span class="pl-s1"><span class="pl-c">     */</span></span>
+<span class="pl-s1">    <span class="pl-k">protected</span> <span class="pl-smi">$table</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>items<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">/**</span></span>
+<span class="pl-s1"><span class="pl-c">     * The attributes that are mass assignable.</span></span>
+<span class="pl-s1"><span class="pl-c">     *</span></span>
+<span class="pl-s1"><span class="pl-c">     * <span class="pl-k">@var</span> array</span></span>
+<span class="pl-s1"><span class="pl-c">     */</span></span>
+<span class="pl-s1">    <span class="pl-k">protected</span> <span class="pl-smi">$fillable</span> <span class="pl-k">=</span> [ </span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>name<span class="pl-pds">'</span></span>, </span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>content<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        ];</span>
+<span class="pl-s1">    <span class="pl-c">/**</span></span>
+<span class="pl-s1"><span class="pl-c">     * The attributes that are automatically indexed and searchable.</span></span>
+<span class="pl-s1"><span class="pl-c">     *</span></span>
+<span class="pl-s1"><span class="pl-c">     * <span class="pl-k">@var</span> array</span></span>
+<span class="pl-s1"><span class="pl-c">     */</span></span>
+<span class="pl-s1">    <span class="pl-k">protected</span> <span class="pl-smi">$searchable</span> <span class="pl-k">=</span> [</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>content<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        ];  </span>
+<span class="pl-s1"></span>
+<span class="pl-s1">}</span></pre></div>
+
+<h2>
+<a id="setting-up" class="anchor" href="#setting-up" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setting up</h2>
+
+<p>Update <strong>composer.json</strong> with the following entries</p>
+
+<pre><code>"require": {
+    "rapideinternet/laravel-searchable": "dev-master"
+},
+
+"repositories": [
+    {
+        "type": "vcs",
+        "url":  "git@github.com:rapideinternet/laravel-searchable.git"
+    }
+],
+</code></pre>
+
+<p>Update your <strong>config\app.php</strong></p>
+
+<pre><code>'providers' =&gt; [
+    ...
+    'Searchable\SearchableServiceProvider',
+],
+
+'aliasses' =&gt; [
+    ...
+    'Search'        =&gt; 'Searchable\Facades\Search',
+],
+</code></pre>
+
+<p>Run the following shell commands</p>
+
+<pre><code>composer update
+php artisan vendor:publish
+php artisan migrate
+</code></pre>
+
+<p>Update your models by changing the following lines</p>
+
+<pre><code>class Website extends Model {
+</code></pre>
+
+<p>To extend the SearchableModel class instead of the Model class</p>
+
+<pre><code>class Website extends SearchableModel {
+</code></pre>
+
+<p>Add an array of searchable keys to the model definition</p>
+
+<pre><code>protected $searchable = [
+    'name',
+    'comments',
+    ...
+];
+</code></pre>
+
+<p>Every time a model is saved or stored, it will automatically index the words present in the searchable array</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/rapideinternet/laravel-searchable">Laravel Searchable</a> is maintained by <a href="https://github.com/rapideinternet">rapideinternet</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
+
