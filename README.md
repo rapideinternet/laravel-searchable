@@ -90,7 +90,8 @@ protected $searchable = [
 ];
 ```
 For example if searching for the word **"John"**, one item may contain 1 occurence of the query in the **'name'** attribute while another item contains 3 occurences of the query in the **'comments'** attribute.
-The result would be that the first item had a score of 20 while the second item has a score of 15 and is ranked lower because the 'name' attirubte is more relevant.
+
+The result would be that the first item has a score of 20 while the second item has a score of 15 and is ranked lower because the 'name' attirubte is more relevant.
 
 Indexing
 -------
