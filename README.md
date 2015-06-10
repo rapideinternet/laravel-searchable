@@ -8,7 +8,7 @@ Example model
 
 use Searchable\Models\Searchable;
 
-class Item extends Searchable {
+class Item extends SearchableModel {
 	
 	/**
 	 * The database table used by the model.
