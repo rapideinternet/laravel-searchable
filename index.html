@@ -56,8 +56,8 @@
 <span class="pl-s1"><span class="pl-c">     * <span class="pl-k">@var</span> array</span></span>
 <span class="pl-s1"><span class="pl-c">     */</span></span>
 <span class="pl-s1">    <span class="pl-k">protected</span> <span class="pl-smi">$searchable</span> <span class="pl-k">=</span> [</span>
-<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span>,</span>
-<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>content<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">20</span>,</span>
+<span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>content<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-c1">5</span>,</span>
 <span class="pl-s1">        ];  </span>
 <span class="pl-s1"></span>
 <span class="pl-s1">}</span></pre></div>
@@ -109,16 +109,25 @@ php artisan migrate
 <pre><code>class Website extends SearchableModel {
 </code></pre>
 
-<p>Add an array of searchable keys to the model definition</p>
+<p>Add an array of searchable attributes. Each attribute carries a weight. More weight means higher relevance.</p>
 
 <pre><code>protected $searchable = [
-    'name',
-    'comments',
+    'name' =&gt; 20,
+    'comments' =&gt; 5,
     ...
 ];
 </code></pre>
 
+<p>For example if searching for the word <strong>"John"</strong>, one item may contain 1 occurence of the query in the <strong>'name'</strong> attribute while another item contains 3 occurences of the query in the <strong>'comments'</strong> attribute.</p>
+
+<p>The result would be that the first item has a score of 20 while the second item has a score of 15 and is ranked lower because the 'name' attirubte is more relevant.</p>
+
+<h2>
+<a id="indexing" class="anchor" href="#indexing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Indexing</h2>
+
 <p>Every time a model is saved or stored, it will automatically index the words present in the searchable array</p>
+
+<p>Scheduler</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/rapideinternet/laravel-searchable">Laravel Searchable</a> is maintained by <a href="https://github.com/rapideinternet">rapideinternet</a>.</span>
