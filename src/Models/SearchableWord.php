@@ -31,7 +31,7 @@ class SearchableWord extends Model
 			return $result;
 		}
 		
-		$metaphone = \DoubleMetaPhone::get($word);
+		$metaphone = \Searchable\Facades\DoubleMetaPhone::get($word);
 		
 		return self::create([
 			'word' => strtolower(iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $word)),
