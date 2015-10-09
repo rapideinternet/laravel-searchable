@@ -47,7 +47,7 @@ class SearchableServiceProvider extends ServiceProvider
 		}
 		
 		$this->publishes([
-			__DIR__.'/Database/migrations/' => database_path('/migrations')
+			realpath(__DIR__ . '/Database/migrations/') => database_path('/migrations')
 		], 'searchable');
 	}
 
