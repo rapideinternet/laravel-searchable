@@ -82,7 +82,7 @@ class Searchable
 			$class_name = $index->instance_class;
 			$ref = &$this->results[sprintf('%s\%u', $class_name, $index->instance_key)];
 			if(!isset($ref)) {
-				$ref = new $class_name;
+				$ref = $class_name::find($index->instance_key);
 			}
 			$ref->addScore($index->score * $multiplier);
 		}
